@@ -15,3 +15,4 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 
 Route::resource('admin/cars', AdminCarController::class);
+//test
