@@ -15,15 +15,11 @@ class CarController extends Controller
         $search = $request->search;
 
         if ($search) {
-
             $cars = Car::where('brand', 'like', "%$search%")
-                        ->orWhere('model', 'like', "%$search%")
-                        ->get();
-
+                ->orWhere('model', 'like', "%$search%")
+                ->get();
         } else {
-
             $cars = Car::all();
-
         }
 
         return view('cars.index', compact('cars', 'search'));
@@ -50,7 +46,8 @@ class CarController extends Controller
      */
     public function show(Car $car)
     {
-        //
+        // لارافيل هيعمل findOrFail أوتوماتيك للبند بمعرف السيارة
+        return view('cars.show', compact('car'));
     }
 
     /**

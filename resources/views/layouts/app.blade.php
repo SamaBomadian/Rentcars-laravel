@@ -1,107 +1,167 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="csrf-token" content="{{ csrf_token() }}">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Rent Cars</title>
+    <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
+    <!-- Bootstrap Icons -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
-        <title>{{ config('app.name', 'Laravel') }}</title>
+</head>
+<body>
+    
+<div class="container sticky-top pt-3">
+    <nav class="navbar navbar-expand-lg px-4 bg-body-tertiary rounded-4 shadow-sm">
+        <div class="container-fluid">
 
-        <!-- Fonts -->
-        <link rel="preconnect" href="https://fonts.bunny.net">
-        <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}"/>
-        {{-- <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}"> --}}
-        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+            <!-- Logo -->
+            <a class="navbar-brand fw-medium fs-4 d-flex align-items-center gap-2" href="{{ url('/') }}">
+                <img src="{{ asset('images/Group.png') }}" alt="Logo" width="30" height="30">
+                <span class="fw-bold text-primary">RENTCARS</span>
+            </a>
 
-        <!-- Scripts -->
-        {{-- @vite(['resources/css/app.css', 'resources/js/app.js']) --}}
-        <style>
-            html {
-        scroll-behavior: smooth;
-    }
+            <button class="navbar-toggler"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent">
 
-    body {
-        max-width: 100%;
-        overflow-x: hidden;
-        position: relative; 
-    }
-    footer .nav-link{
-    color:#D6D6D6 !important;   
-}
- @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
-.carr{
-    background-image: url("{{ asset('images/Fram).png') }}");
-    background-position: right;
-}
+                <span class="navbar-toggler-icon"></span>
 
+            </button>
 
-</style>
-    </head>
-    <body class="font-sans antialiased">
-        <div class="min-h-screen bg-gray-100">
-            {{-- @include('layouts.navigation') --}}
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
-            <!-- Page Heading -->
-            {{-- @isset($header)
-                <header class="bg-white shadow">
-                    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                        {{ $header }}
-                    </div>
-                </header>
-            @endisset --}}
-            @include('layouts.navbar')
+                <ul class="navbar-nav mx-auto mb-2 mb-lg-0 fw-medium gap-lg-4 text-center">
 
-            <!-- Page Content -->
-            {{-- <main>
-                {{ $slot }}
-            </main> --}}
-            @yield('content')
-        </div>
+                    <li class="nav-item">
+                        <a class="nav-link text-primary" href="{{ url('/#home') }}">Home</a>
+                    </li>
 
+                    <li class="nav-item">
+                        <a class="nav-link text-primary" href="{{ url('/#about') }}">About Us</a>
+                    </li>
 
-<footer class="px-5 " style="background-color:#051C34;color:white;"> 
-        <div class="row pt-3"> 
-            <div class="col-6 col-md-3 d-flex flex-column " > 
-                <img src="{{ asset('images/Frame 993.png') }}" style="width:100px;height:30px;margin-bottom:5px"/> 
+                    <li class="nav-item">
+                        <a class="nav-link text-primary" href="{{ route('cars.index') }}">Cars</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link text-primary" href="{{ url('/#contact') }}">Contact</a>
+                    </li>
+
+                    @auth
+                        <li class="nav-item">
+                            <a class="nav-link text-primary" href="#">
+                                My Bookings
+                            </a>
+                        </li>
+                    @endauth
+
+                    @auth
+                        @if(Auth::user()->role == 'admin')
+
+                            <li class="nav-item dropdown">
+
+                                <a class="nav-link dropdown-toggle text-primary"
+                                   href="#"
+                                   data-bs-toggle="dropdown">
+
+                                    Dashboard
+
+                                </a>
+
+                                <ul class="dropdown-menu">
+
+                                    <li>
+                                        <a class="dropdown-item" href="{{ route('dashboard') }}">
+                                            Dashboard
+                                        </a>
+                                    </li>
+
+                                    <li>
+                                        <a class="dropdown-item" href="#">
+                                            Manage Users
+                                            {{-- {{ route('users.index') }} --}}
+                                        </a>
+                                    </li>
+
+                                    <li>
+                                        <a class="dropdown-item" href="#">
+                                            Manage Cars
+                                            {{-- {{ route('cars.manage') }} --}}
+                                        </a>
+                                    </li>
+
+                                    <li>
+                                        <a class="dropdown-item" href="#">
+                                            Manage Bookings
+                                            {{-- {{ route('bookings.manage') }} --}}
+                                        </a>
+                                    </li>
+
+                                </ul>
+
+                            </li>
+
+                        @endif
+                    @endauth
+
+                </ul>
+
+                <div class="d-flex align-items-center gap-3 justify-content-center">
+
+                    @auth
+
+                        <a href="{{ route('profile.edit') }}"
+                           class="text-decoration-none fw-bold text-primary">
+
+                            <i class="fa-solid fa-user"></i>
+
+                            {{ Auth::user()->name }}
+
+                        </a>
+
+                        <form action="{{ route('logout') }}" method="POST">
+                            @csrf
+
+                            <button class="btn btn-outline-danger">
+                                Log Out
+                            </button>
+
+                        </form>
+
+                    @else
+
+                        <a href="{{ route('login') }}"
+                           class="btn btn-outline-primary">
+
+                            Sign In
+
+                        </a>
+
+                        <a href="{{ route('register') }}"
+                           class="btn btn-primary">
+
+                            Sign Up
+
+                        </a>
+
+                    @endauth
+
+                </div>
+
             </div>
-                 <div class="col-6 col-md-3 "> 
-                    <h5 style= "color:#1572D3;">Our Product</h5> 
-                    <ul class="nav flex-column"> 
-                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 ">Career</a></li> 
-                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 ">Car</a></li> 
-                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 ">Packages</a></li> 
-                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 ">Features</a></li> 
-                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0">Priceline</a></li> 
-                    </ul> 
-                </div> 
-                <div class="col-6 col-md-3 "> 
-                    <h5 style= "color:#1572D3;">Resources</h5> 
-                    <ul class="nav flex-column"> 
-                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0">Download</a></li> 
-                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0">Help Center</a></li> 
-                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0">Guides</a></li> 
-                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0">Partner Network</a></li> 
-                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0">Cruises</a></li>
-                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0">Developer</a></li>
-                     </ul> 
-                    </div> 
-                    <div class="col-6 col-md-3 "> 
-                    <h5 style= "color:#1572D3;">About Rentcars</h5> 
-                    <ul class="nav flex-column"> 
-                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0">Why Choose Us</a></li> 
-                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0">Our Story</a></li> 
-                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0">investor Relations</a></li> 
-                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0">Press Center</a></li> 
-                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0">Advertise</a></li>
-                        
-                     </ul> 
-                    </div>  
-                             <div class="d-flex flex-column flex-sm-row  pt-4 mt-4 px-3 border-top align-content-between justify-content-between"> 
-                                <p>© 2026 <a href="#home" style="color:#1572D3 ; text-decoration:none;">RentCars</a> Company, Inc. All rights reserved.</p> 
-                                 </div>
-</footer>
-<script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
 
-    </body>
+        </div>
+    </nav>
+</div>
+    <main class="container py-4">
+        @yield('content')
+    </main>
+    @include('includes.footer')
+    <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
+</body>
 </html>
+
