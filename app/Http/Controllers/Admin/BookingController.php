@@ -12,21 +12,18 @@ class BookingController extends Controller
     {
         $query = Booking::with(['user', 'car']);
 
-        // Search
         if ($request->search) {
             $query->whereHas('user', function ($q) use ($request) {
                 $q->where('name', 'like', '%' . $request->search . '%');
             });
         }
 
-        // Filter
         if ($request->status && $request->status != 'All') {
             $query->where('status', $request->status);
         }
 
         $bookings = $query->latest()->paginate(5);
 
-        // Statistics
         $total = Booking::count();
         $pending = Booking::where('status', 'Pending')->count();
         $approved = Booking::where('status', 'Approved')->count();
