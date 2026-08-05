@@ -3,7 +3,7 @@
         <div class="container-fluid">
 
             <!-- Logo -->
-            <a class="navbar-brand fw-medium fs-4 d-flex align-items-center gap-2" href="{{ url('/') }}">
+            <a class="navbar-brand fw-medium fs-4 d-flex align-items-center gap-2" href="{{ route('home') }}">
                 <img src="{{ asset('images/Group.png') }}" alt="Logo" width="30" height="30">
                 <span class="fw-bold text-primary">RENTCARS</span>
             </a>
@@ -11,7 +11,10 @@
             <button class="navbar-toggler"
                     type="button"
                     data-bs-toggle="collapse"
-                    data-bs-target="#navbarSupportedContent">
+                    data-bs-target="#navbarSupportedContent"
+                    aria-controls="navbarSupportedContent"
+                    aria-expanded="false"
+                    aria-label="Toggle navigation">
 
                 <span class="navbar-toggler-icon"></span>
 
@@ -19,119 +22,103 @@
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
-                <ul class="navbar-nav mx-auto mb-2 mb-lg-0 fw-medium gap-lg-4 text-center">
+                <ul class="navbar-nav mx-auto mb-2 mb-lg-0 fw-medium gap-lg-4">
 
                     <li class="nav-item">
-                        <a class="nav-link text-primary" href="{{ url('/#home') }}">Home</a>
+                        <a class="nav-link" href="{{ route('home') }}">Home</a>
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link text-primary" href="{{ url('/#about') }}">About Us</a>
+                        <a class="nav-link" href="{{ url('/#about') }}">About Us</a>
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link text-primary" href="{{ route('cars.index') }}">Cars</a>
+                        <a class="nav-link" href="{{ route('cars.index') }}">Cars</a>
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link text-primary" href="{{ url('/#contact') }}">Contact</a>
+                        <a class="nav-link" href="{{ url('/#contact') }}">Contact</a>
                     </li>
 
                     @auth
-                        <li class="nav-item">
-                            <a class="nav-link text-primary" href="#">
-                                My Bookings
-                            </a>
-                        </li>
-                    @endauth
 
-                    @auth
                         @if(Auth::user()->role == 'admin')
 
-                            <li class="nav-item dropdown">
+                        <li class="nav-item dropdown">
 
-                                <a class="nav-link dropdown-toggle text-primary"
-                                   href="#"
-                                   data-bs-toggle="dropdown">
+                            <a class="nav-link dropdown-toggle"
+                               href="#"
+                               role="button"
+                               data-bs-toggle="dropdown"
+                               aria-expanded="false">
 
-                                    Dashboard
+                                Dashboard
 
-                                </a>
+                            </a>
 
-                                <ul class="dropdown-menu">
+                            <ul class="dropdown-menu">
 
-                                    <li>
-                                        <a class="dropdown-item" href="{{ route('dashboard') }}">
-                                            Dashboard
-                                        </a>
-                                    </li>
+                                <li>
+                                    <a class="dropdown-item" href="{{ route('dashboard') }}">
+                                        Dashboard
+                                    </a>
+                                </li>
 
-                                    <li>
-                                        <a class="dropdown-item" href="#">
-                                            Manage Users
-                                            {{-- {{ route('users.index') }} --}}
-                                        </a>
-                                    </li>
+                                <li>
+                                    <a class="dropdown-item" href="{{ route('cars.index') }}">
+                                        Manage Cars
+                                    </a>
+                                </li>
 
-                                    <li>
-                                        <a class="dropdown-item" href="#">
-                                            Manage Cars
-                                            {{-- {{ route('cars.manage') }} --}}
-                                        </a>
-                                    </li>
+                                <li>
+                                    <a class="dropdown-item disabled" href="#">
+                                        Manage Users
+                                    </a>
+                                </li>
 
-                                    <li>
-                                        <a class="dropdown-item" href="#">
-                                            Manage Bookings
-                                            {{-- {{ route('bookings.manage') }} --}}
-                                        </a>
-                                    </li>
+                                <li>
+                                    <a class="dropdown-item disabled" href="#">
+                                        Manage Bookings
+                                    </a>
+                                </li>
 
-                                </ul>
+                            </ul>
 
-                            </li>
+                        </li>
 
                         @endif
+
                     @endauth
 
                 </ul>
 
-                <div class="d-flex align-items-center gap-3 justify-content-center">
+                <div class="d-flex align-items-center gap-2">
 
                     @auth
 
                         <a href="{{ route('profile.edit') }}"
-                           class="text-decoration-none fw-bold text-primary">
+                           class="text-decoration-none fw-bold">
 
                             <i class="fa-solid fa-user"></i>
-
                             {{ Auth::user()->name }}
 
                         </a>
 
                         <form action="{{ route('logout') }}" method="POST">
                             @csrf
-
-                            <button class="btn btn-outline-danger">
+                            <button type="submit" class="btn btn-outline-danger">
                                 Log Out
                             </button>
-
                         </form>
 
                     @else
 
-                        <a href="{{ route('login') }}"
-                           class="btn btn-outline-primary">
-
+                        <a href="{{ route('login') }}" class="btn btn-outline-primary">
                             Sign In
-
                         </a>
 
-                        <a href="{{ route('register') }}"
-                           class="btn btn-primary">
-
+                        <a href="{{ route('register') }}" class="btn btn-primary">
                             Sign Up
-
                         </a>
 
                     @endauth

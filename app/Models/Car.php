@@ -2,14 +2,22 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Car extends Model
 {
-    protected $fillable = ['name', 'brand', 'price_per_day', 'image', 'is_available'];
+    use HasFactory;
 
-    public function bookings()
-    {
-        return $this->hasMany(Booking::class);
-    }
+    protected $fillable = [
+        'brand',
+        'model',
+        'price_per_day',
+        'image',
+        'passengers',
+        'transmission',
+        'doors',
+        'air_conditioning',
+        'status',
+    ];
 }
