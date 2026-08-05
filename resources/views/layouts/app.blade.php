@@ -9,6 +9,13 @@
 
 </head>
 <body>
+    @if(session('success'))
+<div class="container mt-3">
+    <div class="alert alert-success">
+        {{ session('success') }}
+    </div>
+</div>
+@endif
         @yield('content') 
 
     <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
