@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Admin\BookingController;
+use App\Http\Controllers\AdminCarController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -13,14 +13,5 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 
 
-Route::middleware(['auth'])->prefix('admin')->group(function () {
 
-    Route::get('/bookings', [BookingController::class, 'index'])
-        ->name('admin.bookings.index');
-
-    Route::put('/bookings/{booking}/approve', [BookingController::class, 'approve'])
-        ->name('admin.bookings.approve');
-
-    Route::put('/bookings/{booking}/reject', [BookingController::class, 'reject'])
-        ->name('admin.bookings.reject');
-});
+Route::resource('admin/cars', AdminCarController::class);
