@@ -44,8 +44,8 @@
         <div class="col-md-3">
             <div class="card bg-danger text-white text-center">
                 <div class="card-body">
-                    <h4>Rejected</h4>
-                    <h2>{{ $rejected }}</h2>
+                    <h4>Cancelled</h4>
+                    <h2>{{ $cancelled }}</h2>
                 </div>
             </div>
         </div>

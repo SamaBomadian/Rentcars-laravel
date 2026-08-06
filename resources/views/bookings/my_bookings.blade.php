@@ -2,93 +2,121 @@
 
 @section('content')
 
-<div class="container mt-4">
+<div class="container mt-5 mb-5">
 
-    <h2 class="mb-4">My Bookings</h2>
+    <h2 class="mb-4 fw-bold">My Bookings</h2>
 
-    {{-- Success Message --}}
     @if(session('success'))
-        <div class="alert alert-success">
+        <div class="alert alert-success alert-dismissible fade show rounded-3 mb-4">
             {{ session('success') }}
+
+            <button type="button"
+                    class="btn-close"
+                    data-bs-dismiss="alert">
+            </button>
         </div>
     @endif
 
-    <table class="table table-bordered">
+    <div class="row">
+        {{-- {{ dd($bookings) }} --}}
 
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Date</th>
-                <th>Time</th>
-                <th>Status</th>
-                <th>Action</th>
-            </tr>
-        </thead>
+        @forelse($bookings as $booking)
 
-        <tbody>
+            <div class="col-md-4 mb-4">
 
-            @forelse($bookings as $booking)
+                <div class="card shadow-sm h-100 overflow-hidden">
 
-            <tr>
-                <td>{{ $booking->id }}</td>
-
-                <td>{{ $booking->date }}</td>
-
-                <td>{{ $booking->time }}</td>
-
-                <td>
-                    {{ $booking->status }}
-                </td>
-
-                <td>
-
-                    @if(strtolower($booking->status) == 'pending')
-
-                    <form action="{{ route('bookings.destroy', $booking->id) }}" 
-                          method="POST">
-
-                        @csrf
-                        @method('DELETE')
-
-                        <button type="submit" 
-                                class="btn btn-danger btn-sm"
-                                onclick="return confirm('Are you sure you want to cancel this booking?')">
-                            Cancel Booking
-                        </button>
-
-                    </form>
-
-                    @elseif(strtolower($booking->status) == 'cancelled')
-
-                        <span class="text-muted">
-                            Cancelled
-                        </span>
-
-                    @else
-
-                        <span class="text-success">
-                            Confirmed
-                        </span>
-
+                    @if($booking->car && $booking->car->image)
+                        <img src="{{ asset('storage/'.$booking->car->image) }}"
+                             class="card-img-top"
+                             style="height:180px;object-fit:cover;">
                     @endif
 
-                </td>
+                    <div class="card-body d-flex flex-column justify-content-between">
 
-            </tr>
+                        <div>
 
-            @empty
+                            <h4 class="fw-bold">
+                                {{ $booking->car->brand }}
+                                {{ $booking->car->model }}
+                            </h4>
 
-            <tr>
-                <td colspan="5" class="text-center">
-                    No bookings found.
-                </td>
-            </tr>
+                            <hr>
 
-            @endforelse
+                            <p>
+                                <strong>Pick-up Date:</strong>
+                                {{ $booking->pickup_date }}
+                            </p>
 
-        </tbody>
+                            <p>
+                                <strong>Return Date:</strong>
+                                {{ $booking->return_date }}
+                            </p>
 
-    </table>
+                            <p>
+
+                                <strong>Status:</strong>
+
+                                @if($booking->status === 'Pending')
+
+                                    <span class="badge bg-warning text-dark">
+                                        Pending
+                                    </span>
+
+                                @elseif($booking->status === 'Approved' || $booking->status === 'Confirmed')
+
+                                    <span class="badge bg-success">
+                                        Confirmed
+                                    </span>
+
+                                @else
+
+                                    <span class="badge bg-danger">
+                                        Cancelled
+                                    </span>
+
+                                @endif
+
+                            </p>
+
+                        </div>
+
+                        @if($booking->status !== 'Cancelled')
+
+                            <form action="{{ route('bookings.destroy',$booking->id) }}"
+                                  method="POST">
+
+                                @csrf
+                                @method('DELETE')
+
+                                <button class="btn btn-outline-danger w-100"
+                                        onclick="return confirm('Are you sure?')">
+
+                                    Cancel Booking
+
+                                </button>
+
+                            </form>
+
+                        @endif
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        @empty
+
+            <div class="col-12 text-center py-5">
+                <p class="text-muted fs-5">
+                    No bookings found yet.
+                </p>
+            </div>
+
+        @endforelse
+
+    </div>
 
 </div>
 

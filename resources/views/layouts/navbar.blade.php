@@ -38,11 +38,13 @@
                     </li>
 
                     @auth
+                    @if(Auth::user()->role == 'user')
                         <li class="nav-item">
-                            <a class="nav-link text-primary" href="#">
+                            <a class="nav-link text-primary" href="{{ route('bookings.my') }}">
                                 My Bookings
                             </a>
                         </li>
+                    @endif
                     @endauth
 
                     @auth
@@ -74,15 +76,15 @@
                                     </li>
 
                                     <li>
-                                        <a class="dropdown-item" href="#">
-                                            Manage Cars
+                                        <a class="dropdown-item" href="{{ route('admin.cars.index') }}">
+                                            Manage Carss
                                             {{-- {{ route('cars.manage') }} --}}
                                         </a>
                                     </li>
 
                                     <li>
-                                        <a class="dropdown-item" href="#">
-                                            Manage Bookings
+                                        <a class="dropdown-item" href="{{ route('admin.bookings.index') }}">
+                                            Manage Bookingsss
                                             {{-- {{ route('bookings.manage') }} --}}
                                         </a>
                                     </li>

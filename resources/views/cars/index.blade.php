@@ -122,7 +122,7 @@
 
                             </div>
 
-                            <a href="{{ route('cars.show',$car->id) }}"
+                            <a href="{{ route('cars.show',$car) }}"
                                class="btn btn-primary w-100">
 
                                 Rent Now
@@ -141,12 +141,12 @@
 
                     <h4>No cars found.</h4>
 
-                    <a href="{{ route('cars.index') }}"
+                    {{-- <a href="{{ route('cars.index') }}"
                        class="btn btn-outline-primary">
 
                         View All Cars
 
-                    </a>
+                    </a> --}}
 
                 </div>
 
@@ -156,5 +156,6 @@
 
     </div>
 </section>
-
+@include('includes.footer')
 @endsection
+

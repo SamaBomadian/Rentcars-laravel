@@ -6,7 +6,7 @@
     <div class="d-flex justify-content-between mb-3">
         <h2>Cars List</h2>
 
-        <a href="{{ route('cars.create') }}" class="btn btn-primary">
+        <a href="{{ route('admin.cars.create') }}" class="btn btn-primary">
             Add Car
         </a>
     </div>
@@ -22,10 +22,10 @@
             <tr>
                 <th>ID</th>
                 <th>Image</th>
-                <th>Name</th>
+                
                 <th>Brand</th>
                 <th>Model</th>
-                <th>Year</th>
+                
                 <th>Price</th>
                 <th>Actions</th>
             </tr>
@@ -42,18 +42,18 @@
                         @endif
                     </td>
 
-                    <td>{{ $car->name }}</td>
+                    
                     <td>{{ $car->brand }}</td>
                     <td>{{ $car->model }}</td>
-                    <td>{{ $car->year }}</td>
-                    <td>${{ $car->price }}</td>
+                    
+                    <td>${{ $car->price_per_day }}</td>
 
                     <td>
-                        <a href="{{ route('cars.edit', $car->id) }}" class="btn btn-warning btn-sm">
+                        <a href="{{ route('admin.cars.edit', $car->id) }}" class="btn btn-warning btn-sm">
                             Edit
                         </a>
 
-                        <form action="{{ route('cars.destroy', $car->id) }}" method="POST" style="display:inline;">
+                        <form action="{{ route('admin.cars.destroy', $car->id) }}" method="POST" style="display:inline;">
                             @csrf
                             @method('DELETE')
 

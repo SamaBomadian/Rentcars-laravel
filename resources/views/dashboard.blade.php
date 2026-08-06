@@ -27,12 +27,12 @@
                     Manage Users
                 </a>
 
-                <a href="#" class="d-block text-white text-decoration-none py-3">
+                <a href="{{ route('admin.cars.index') }}" class="d-block text-white text-decoration-none py-3">
                     <i class="fas fa-car me-2"></i>
                     Manage Cars
                 </a>
 
-                <a href="#" class="d-block text-white text-decoration-none py-3">
+                <a href="{{ route('admin.bookings.index') }}" class="d-block text-white text-decoration-none py-3">
                     <i class="fas fa-calendar-check me-2"></i>
                     Manage Bookings
                 </a>

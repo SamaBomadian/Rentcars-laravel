@@ -1,6 +1,4 @@
-
 <?php
-
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
@@ -24,12 +22,14 @@ class AdminCarController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'name'  => 'required|string|max:255',
-            'brand' => 'required|string|max:255',
+            'brand'  => 'required|string|max:255',
             'model' => 'required|string|max:255',
-            'year'  => 'required|integer',
-            'price' => 'required|numeric',
+            'price_per_day' => 'required|string|max:255',
+            'passengers'  => 'required|integer',
+            'doors' => 'required|integer',
             'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'transmission' => 'required|string|max:255',
+            'air_conditioning' => 'required|string|max:255',
         ]);
 
         if ($request->hasFile('image')) {
@@ -38,7 +38,7 @@ class AdminCarController extends Controller
 
         Car::create($data);
 
-        return redirect()->route('cars.index')
+        return redirect()->route('admin.cars.index')
             ->with('success', 'Car added successfully.');
     }
 
@@ -68,7 +68,7 @@ class AdminCarController extends Controller
 
         $car->update($data);
 
-        return redirect()->route('cars.index')
+        return redirect()->route('admin.cars.index')
             ->with('success', 'Car updated successfully.');
     }
 
@@ -80,7 +80,7 @@ class AdminCarController extends Controller
 
         $car->delete();
 
-        return redirect()->route('cars.index')
+        return redirect()->route('admin.cars.index')
             ->with('success', 'Car deleted successfully.');
     }
 }

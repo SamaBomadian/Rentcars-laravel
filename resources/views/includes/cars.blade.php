@@ -70,7 +70,7 @@
             @empty
                 <div class="col-12 text-center py-5">
                     <h4 class="text-muted">No cars found matching your search.</h4>
-                    <a href="{{ route('home') }}#cars" class="btn btn-outline-primary mt-2">View All Cars</a>
+                    <a href="{{ route('cars.index') }}" class="btn btn-outline-primary mt-2">View All Cars</a>
                 </div>
             @endforelse
 

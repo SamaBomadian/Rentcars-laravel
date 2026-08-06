@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Booking;
 use Illuminate\Http\Request;
 
-class BookingController extends Controller
+class AdminBookingController extends Controller
 {
     public function index(Request $request)
     {
@@ -27,14 +27,14 @@ class BookingController extends Controller
         $total = Booking::count();
         $pending = Booking::where('status', 'Pending')->count();
         $approved = Booking::where('status', 'Approved')->count();
-        $rejected = Booking::where('status', 'Rejected')->count();
+        $cancelled = Booking::where('status', 'cancelled')->count();
 
         return view('admin.bookings.index', compact(
             'bookings',
             'total',
             'pending',
             'approved',
-            'rejected'
+            'cancelled'
         ));
     }
 
@@ -49,7 +49,7 @@ class BookingController extends Controller
 
     public function reject(Booking $booking)
     {
-        $booking->status = 'Rejected';
+        $booking->status = 'cancelled';
         $booking->save();
 
         return redirect()->route('admin.bookings.index')

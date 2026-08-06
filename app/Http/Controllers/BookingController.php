@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Booking;
 use App\Models\User;
+use App\Models\Car;
+use Carbon\Carbon;
+
 
 class BookingController extends Controller
 {
@@ -33,18 +36,36 @@ class BookingController extends Controller
     }
 
 
-    public function store(Request $request)
-    {
-        Booking::create([
-            'user_id' => $request->user_id,
-            'date' => $request->date,
-            'time' => $request->time,
-            'status' => 'Pending',
-        ]);
 
-        return redirect()->route('bookings.my')
-                         ->with('success', 'Booking created successfully.');
+
+public function store(Request $request)
+{
+    $car = Car::findOrFail($request->car_id);
+
+    $pickup = Carbon::parse($request->pickup_date);
+    $return = Carbon::parse($request->return_date);
+
+    $days = $pickup->diffInDays($return);
+
+    // لو نفس اليوم اعتبره يوم واحد
+    if ($days == 0) {
+        $days = 1;
     }
+
+    $totalPrice = $days * $car->price_per_day;
+
+    Booking::create([
+        'user_id' => Auth::id(),
+        'car_id' => $request->car_id,
+        'pickup_date' => $request->pickup_date,
+        'return_date' => $request->return_date,
+        'total_price' => $totalPrice,
+        'status' => 'Pending',
+    ]);
+
+    return redirect()->route('bookings.my')
+        ->with('success', 'Booking created successfully.');
+}
 
 
     public function edit($id)

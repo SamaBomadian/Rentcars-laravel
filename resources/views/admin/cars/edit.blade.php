@@ -5,7 +5,7 @@
 <div class="container">
     <h2>Edit Car</h2>
 
-    <form action="{{ route('cars.update', $car->id) }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ route('admin.cars.update', $car->id) }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('PUT')
 
