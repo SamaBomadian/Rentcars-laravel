@@ -51,7 +51,7 @@
                     <div class="card h-100 border-0 shadow-sm rounded-4 p-2 custom-car-card">
 
                         <img
-                            src="{{ asset('images/'.$car->image) }}"
+                            src="{{ asset('storage/'.$car->image) }}"
                             class="card-img-top p-3"
                             alt="{{ $car->brand }}"
                             style="height:180px;object-fit:contain;">
@@ -110,7 +110,7 @@
 
                                     <span class="fw-bold fs-5">
 
-                                        ${{ $car->price_per_day }}
+                                        {{ $car->price_per_day }}EGP
 
                                     </span>
 
@@ -121,12 +121,9 @@
                                 </div>
 
                             </div>
-
                             <a href="{{ route('cars.show',$car->id) }}"
                                class="btn btn-primary w-100">
-
                                 Rent Now
-
                             </a>
 
                         </div>

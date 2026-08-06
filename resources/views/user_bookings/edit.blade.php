@@ -1,62 +1,98 @@
 @extends('layouts.app')
 
 @section('content')
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
+                <div class="card-header bg-primary text-white p-4">
+                    <h4 class="mb-0 fw-bold">Edit Booking</h4>
+                </div>
 
-<div class="container mt-4">
+                <div class="card-body p-4 p-md-5">
 
-    <h2>Edit Booking</h2>
+                    @if ($errors->any())
+                        <div class="alert alert-danger rounded-3 mb-4">
+                            <ul class="mb-0 ps-3">
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
 
-    <form action="{{ route('bookings.update', $booking->id) }}"
-          method="POST">
+                    <form action="{{ route('user.bookings.update', $booking->id) }}" method="POST">
+                        @csrf
+                        @method('PUT')
 
-        @csrf
-        @method('PUT')
+                        {{-- اختيار السيارة --}}
+                        <div class="mb-4">
+                            <label for="car_id" class="form-label fw-bold text-secondary">Select Car:</label>
+                            <select name="car_id" id="car_id" class="form-select rounded-3 py-2" required>
+                                @foreach($cars as $car)
+                                    <option value="{{ $car->id }}" {{ $booking->car_id == $car->id ? 'selected' : '' }}>
+                                        {{ $car->brand }} {{ $car->model }} ({{ number_format($car->price_per_day, 2) }} EGP / day)
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
 
-        <div class="mb-3">
-            <label class="form-label">Car</label>
+                        {{-- التواريخ --}}
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-6">
+                                <label for="pickup_date" class="form-label fw-bold text-secondary">Pick-up Date:</label>
+                                <input type="date" 
+                                       id="pickup_date" 
+                                       name="pickup_date" 
+                                       class="form-control rounded-3 py-2" 
+                                       value="{{ old('pickup_date', $booking->pickup_date) }}" 
+                                       min="{{ date('Y-m-d') }}" 
+                                       required>
+                            </div>
 
-            <select name="car_id" class="form-control">
+                            <div class="col-md-6">
+                                <label for="return_date" class="form-label fw-bold text-secondary">Return Date:</label>
+                                <input type="date" 
+                                       id="return_date" 
+                                       name="return_date" 
+                                       class="form-control rounded-3 py-2" 
+                                       value="{{ old('return_date', $booking->return_date) }}" 
+                                       min="{{ old('pickup_date', $booking->pickup_date) }}" 
+                                       required>
+                            </div>
+                        </div>
 
-                @foreach($cars as $car)
+                        {{-- الأزرار --}}
+                        <div class="d-flex justify-content-between align-items-center mt-4">
+                            <a href="{{ route('user.bookings.index') }}" class="btn btn-outline-secondary rounded-pill px-4">
+                                Cancel
+                            </a>
+                            <button type="submit" class="btn btn-primary rounded-pill px-5 fw-bold">
+                                Update Booking
+                            </button>
+                        </div>
+                    </form>
 
-                    <option value="{{ $car->id }}"
-                        {{ $booking->car_id == $car->id ? 'selected' : '' }}>
-
-                        {{ $car->brand }} {{ $car->model }}
-
-                    </option>
-
-                @endforeach
-
-            </select>
+                </div>
+            </div>
         </div>
-
-        <div class="mb-3">
-            <label class="form-label">Pickup Date</label>
-
-            <input type="date"
-                   name="pickup_date"
-                   value="{{ $booking->pickup_date }}"
-                   class="form-control"
-                   required>
-        </div>
-
-        <div class="mb-3">
-            <label class="form-label">Return Date</label>
-
-            <input type="date"
-                   name="return_date"
-                   value="{{ $booking->return_date }}"
-                   class="form-control"
-                   required>
-        </div>
-
-        <button type="submit" class="btn btn-primary">
-            Update Booking
-        </button>
-
-    </form>
-
+    </div>
 </div>
 
+{{-- سكريبت مزامنة التواريخ --}}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const pickupInput = document.getElementById('pickup_date');
+        const returnInput = document.getElementById('return_date');
+
+        pickupInput.addEventListener('change', function () {
+            const selectedPickupDate = this.value;
+            returnInput.min = selectedPickupDate;
+
+            if (returnInput.value && returnInput.value < selectedPickupDate) {
+                returnInput.value = selectedPickupDate;
+            }
+        });
+    });
+</script>
 @endsection

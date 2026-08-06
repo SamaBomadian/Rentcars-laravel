@@ -3,12 +3,14 @@
 @section('content')
 <div class="container py-5">
     <h2 class="fw-bold mb-4">My Bookings</h2>
+
     @if(session('success'))
         <div class="alert alert-success alert-dismissible fade show rounded-3 mb-4" role="alert">
             {{ session('success') }}
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     @endif
+
     <div class="row g-4">
         @forelse($bookings as $booking)
             <div class="col-md-6 col-lg-4">
@@ -41,7 +43,7 @@
                                 <strong>Total Price:</strong> 
                                 <span class="text-success fw-bold">
                                     @if($booking->total_price > 0)
-                                        {{ number_format($booking->total_price, 2) }}EGP
+                                        {{ number_format($booking->total_price, 2) }} EGP
                                     @elseif($booking->car && $booking->pickup_date && $booking->return_date)
                                         @php
                                             $start = \Carbon\Carbon::parse($booking->pickup_date);
@@ -51,22 +53,28 @@
                                         @endphp
                                         {{ number_format($calculatedTotal, 2) }} EGP
                                     @else
-                                        $0.00
+                                        0.00 EGP
                                     @endif
                                 </span>
                             </p>
 
                             <div class="d-flex align-items-center mt-3">
                                 <strong class="me-2">Status:</strong> 
-                                <span class="badge bg-warning text-dark px-3 py-2 rounded-pill">
-                                    {{ $booking->status }}
+                                @php
+                                    $statusClass = match(strtolower($booking->status)) {
+                                        'approved' => 'bg-success text-white',
+                                        'rejected', 'cancelled' => 'bg-danger text-white',
+                                        default => 'bg-warning text-dark',
+                                    };
+                                @endphp
+                                <span class="badge {{ $statusClass }} px-3 py-2 rounded-pill">
+                                    {{ ucfirst($booking->status) }}
                                 </span>
                             </div>
                         </div>
 
-                        {{-- أزرار التعديل والإلغاء --}}
                         <div class="mt-auto pt-3 border-top d-flex gap-2">
-                            @if($booking->status == 'Pending')
+                            @if(strtolower($booking->status) == 'pending')
                                 <a href="{{ route('user.bookings.edit', $booking->id) }}" class="btn btn-outline-success btn-sm w-50 rounded-pill">
                                     Edit
                                 </a>
@@ -81,14 +89,13 @@
                                     </button>
                                 </form>
                             @else
-                                <button class="btn btn-secondary btn-sm w-100 rounded-pill" disabled>
+                                <button class="btn btn-sucess btn-sm w-100 rounded-pill" disabled>
                                     Processed
                                 </button>
                             @endif
                         </div>
 
                     </div>
-
                 </div>
             </div>
         @empty
@@ -100,6 +107,5 @@
             </div>
         @endforelse
     </div>
-
 </div>
 @endsection

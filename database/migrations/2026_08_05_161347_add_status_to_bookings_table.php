@@ -9,14 +9,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('bookings', function (Blueprint $table) {
-            $table->string('status')->default('Pending');
+            $table->string('status')->default('Pending')->change();
         });
     }
 
     public function down(): void
     {
         Schema::table('bookings', function (Blueprint $table) {
-            $table->dropColumn('status');
         });
     }
 };

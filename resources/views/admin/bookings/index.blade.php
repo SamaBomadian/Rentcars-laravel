@@ -159,53 +159,35 @@
                     <td>
 
                         @if($booking->status=="Pending")
-
                             <form action="{{ route('admin.bookings.approve',$booking->id) }}"
                                   method="POST"
                                   class="d-inline"
                                   onsubmit="return confirm('Approve this booking?')">
-
                                 @csrf
-                                @method('PUT')
-
                                 <button class="btn btn-success btn-sm">
                                     Approve
                                 </button>
-
                             </form>
-
                             <form action="{{ route('admin.bookings.reject',$booking->id) }}"
                                   method="POST"
                                   class="d-inline"
                                   onsubmit="return confirm('Reject this booking?')">
-
                                 @csrf
-                                @method('PUT')
-
                                 <button class="btn btn-danger btn-sm">
                                     Reject
                                 </button>
-
                             </form>
-
                         @else
-
                             No Action
-
                         @endif
-
                     </td>
-
                 </tr>
-
             @empty
-
                 <tr>
                     <td colspan="8" class="text-center">
                         No Bookings Found
                     </td>
                 </tr>
-
             @endforelse
 
         </tbody>

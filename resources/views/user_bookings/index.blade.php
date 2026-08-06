@@ -60,11 +60,9 @@
                        class="btn btn-warning btn-sm">
                         Edit
                     </a>
-
                     <form action="{{ route('user.bookings.destroy',$booking->id) }}"
                           method="POST"
                           style="display:inline">
-
                         @csrf
                         @method('DELETE')
 
@@ -78,7 +76,6 @@
                 </td>
 
             </tr>
-
         @empty
 
             <tr>
@@ -86,13 +83,9 @@
                     No Bookings Found
                 </td>
             </tr>
-
         @endforelse
-
         </tbody>
-
     </table>
-
 </div>
 
 @endsection

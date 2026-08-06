@@ -6,13 +6,16 @@ use Illuminate\Database\Eloquent\Model;
 
 class UserBooking extends Model
 {
-    protected $table = 'user_bookings';
 
+    protected $table = 'bookings';
     protected $fillable = [
         'user_id',
         'car_id',
         'pickup_date',
-        'pickup_time',
+        'return_date',
+        'total_price',
+        'payment_method',
+        'payment_status',
         'status',
     ];
 

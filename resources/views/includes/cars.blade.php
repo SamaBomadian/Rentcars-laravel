@@ -30,7 +30,7 @@
                 <div class="col-lg-3 col-md-6">
                     <div class="card h-100 border-0 shadow-sm rounded-4 p-2 custom-car-card">
 
-                        <img src="{{ asset('images/' . $car->image) }}" class="card-img-top p-3" alt="{{ $car->brand }}" style="height: 180px; object-fit: contain;">
+                        <img src="{{ asset('storage/' . $car->image) }}" class="card-img-top p-3" alt="{{ $car->brand }}" style="height: 180px; object-fit: contain;">
                         
                         <div class="card-body d-flex flex-column pt-0">
                         
@@ -60,10 +60,23 @@
                                     <span class="text-muted small">/day</span>
                                 </div>
                             </div>
-
-                            <a href="{{ route('cars.show', $car->id) }}" class="btn btn-primary w-100 py-2 rounded-3 fw-semibold text-center">
+                            @auth
+                                @if (auth()->user()->role === 'admin')
+                                <a href="{{ route('admin.cars.edit', $car->id) }}" class="btn btn-primary w-100 py-2 rounded-3 fw-semibold text-center">
+                                Edit<i class="bi bi-pencil ms-1"></i>
+                                </a>
+                                @else
+                                  <a href="{{ route('cars.show', $car->id) }}" class="btn btn-primary w-100 py-2 rounded-3 fw-semibold text-center">
+                                Rent Now <i class="bi bi-arrow-right ms-1"></i>
+                                 </a>
+                                @endif
+                            @else
+                            <a href="{{ route('login', $car->id) }}" class="btn btn-primary w-100 py-2 rounded-3 fw-semibold text-center">
                                 Rent Now <i class="bi bi-arrow-right ms-1"></i>
                             </a>
+                            @endauth
+
+                            
                         </div>
                     </div>
                 </div>

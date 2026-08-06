@@ -1,7 +1,5 @@
 <?php
-
 namespace App\Http\Controllers\Admin;
-
 use App\Http\Controllers\Controller;
 use App\Models\Booking;
 use Illuminate\Http\Request;
@@ -24,10 +22,10 @@ class BookingController extends Controller
 
         $bookings = $query->latest()->paginate(5);
 
-        $total = Booking::count();
-        $pending = Booking::where('status', 'Pending')->count();
-        $approved = Booking::where('status', 'Approved')->count();
-        $rejected = Booking::where('status', 'Rejected')->count();
+        $total    = Booking::count();
+        $pending  = Booking::whereIn('status', ['Pending', 'pending'])->count();
+        $approved = Booking::whereIn('status', ['Approved', 'approved'])->count();
+        $rejected = Booking::whereIn('status', ['Rejected', 'rejected'])->count();
 
         return view('admin.bookings.index', compact(
             'bookings',
@@ -40,7 +38,22 @@ class BookingController extends Controller
 
     public function approve(Booking $booking)
     {
-        $booking->status = 'Approved';
+        // 1. فحص ما إذا كان هناك حجز آخر مؤكد نفس الفترة لهذه السيارة قبل القبول
+        $hasOverlap = Booking::where('car_id', $booking->car_id)
+            ->where('id', '!=', $booking->id)
+            ->whereIn('status', ['Approved', 'approved'])
+            ->where(function ($query) use ($booking) {
+                $query->where('pickup_date', '<=', $booking->return_date)
+                      ->where('return_date', '>=', $booking->pickup_date);
+            })
+            ->exists();
+
+        if ($hasOverlap) {
+            return redirect()->route('admin.bookings.index')
+                ->with('error', 'لا يمكن قبول الحجز وجود تعارض مع حجز مقبوض سابقاً بنفس التواريخ!');
+        }
+
+        $booking->status = 'Approved'; 
         $booking->save();
 
         return redirect()->route('admin.bookings.index')
@@ -49,7 +62,7 @@ class BookingController extends Controller
 
     public function reject(Booking $booking)
     {
-        $booking->status = 'Rejected';
+        $booking->status = 'Rejected'; 
         $booking->save();
 
         return redirect()->route('admin.bookings.index')

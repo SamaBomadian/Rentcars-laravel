@@ -2,57 +2,54 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\UserBooking;
 use App\Models\Booking;
 use App\Models\Car;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 class UserBookingController extends Controller
 {
     public function index()
     {
-        $bookings = UserBooking::where('user_id', Auth::id())
-            ->latest()
-            ->get();
+        // إحضار جميع حجوزات المستخدم الحالي من جدول bookings
+        $bookings = Booking::with('car')->where('user_id', Auth::id())->latest()->get();
 
-        return view('user_bookings.index', compact('bookings'));
+    return view('user_bookings.my_bookings', compact('bookings'));
     }
 
     public function create()
     {
         $cars = Car::all();
-
         return view('user_bookings.create', compact('cars'));
     }
 
     public function store(Request $request)
     {
+        // 1. التحقق من البيانات لمنع التواريخ القديمة
         $request->validate([
-            'car_id' => 'required|exists:cars,id',
-            'pickup_date' => 'required|date',
-            'pickup_time' => 'required',
+            'car_id'      => 'required|exists:cars,id',
+            'pickup_date' => 'required|date|after_or_equal:today',
+            'return_date' => 'required|date|after_or_equal:pickup_date',
         ]);
 
-        // حفظ في جدول المستخدم
-        $userBooking = UserBooking::create([
-            'user_id' => Auth::id(),
-            'car_id' => $request->car_id,
-            'pickup_date' => $request->pickup_date,
-            'pickup_time' => $request->pickup_time,
-            'status' => 'Pending',
-        ]);
+        // 2. حساب السعر الإجمالي بناءً على عدد الأيام
+        $car = Car::findOrFail($request->car_id);
+        $startDate = Carbon::parse($request->pickup_date);
+        $endDate   = Carbon::parse($request->return_date);
+        $days      = $startDate->diffInDays($endDate) ?: 1; // يحسب يوماً واحداً إذا كانت نفس اليوم
+        $totalPrice = $days * $car->price_per_day;
 
-        // حفظ في جدول الأدمن
+        // 3. الحفظ في جدول bookings الرئيسي مباشرة
         Booking::create([
-            'user_id' => Auth::id(),
-            'car_id' => $request->car_id,
-            'pickup_date' => $request->pickup_date,
-            'return_date' => null,
-            'total_price' => 0,
-            'payment_method' => '',
+            'user_id'        => Auth::id(),
+            'car_id'         => $request->car_id,
+            'pickup_date'    => $request->pickup_date,
+            'return_date'    => $request->return_date,
+            'total_price'    => $totalPrice,
+            'payment_method' => $request->payment_method ?? 'Cash',
             'payment_status' => 'Pending',
-            'status' => 'Pending',
+            'status'         => 'Pending',
         ]);
 
         return redirect()->route('user.bookings.index')
@@ -61,7 +58,7 @@ class UserBookingController extends Controller
 
     public function edit($id)
     {
-        $booking = UserBooking::findOrFail($id);
+        $booking = Booking::where('user_id', Auth::id())->findOrFail($id);
         $cars = Car::all();
 
         return view('user_bookings.edit', compact('booking', 'cars'));
@@ -70,31 +67,26 @@ class UserBookingController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'car_id' => 'required|exists:cars,id',
-            'pickup_date' => 'required|date',
-            'pickup_time' => 'required',
+            'car_id'      => 'required|exists:cars,id',
+            'pickup_date' => 'required|date|after_or_equal:today',
+            'return_date' => 'required|date|after_or_equal:pickup_date',
         ]);
 
-        $booking = UserBooking::findOrFail($id);
+        $booking = Booking::where('user_id', Auth::id())->findOrFail($id);
+
+        // إعادة حساب السعر في حال تغيرت التواريخ أو السيارة
+        $car = Car::findOrFail($request->car_id);
+        $startDate = Carbon::parse($request->pickup_date);
+        $endDate   = Carbon::parse($request->return_date);
+        $days      = $startDate->diffInDays($endDate) ?: 1;
+        $totalPrice = $days * $car->price_per_day;
 
         $booking->update([
-            'car_id' => $request->car_id,
+            'car_id'      => $request->car_id,
             'pickup_date' => $request->pickup_date,
-            'pickup_time' => $request->pickup_time,
+            'return_date' => $request->return_date,
+            'total_price' => $totalPrice,
         ]);
-
-        // تحديث نسخة الأدمن
-        $adminBooking = Booking::where('user_id', Auth::id())
-            ->where('car_id', $booking->car_id)
-            ->where('pickup_date', $booking->pickup_date)
-            ->first();
-
-        if ($adminBooking) {
-            $adminBooking->update([
-                'car_id' => $request->car_id,
-                'pickup_date' => $request->pickup_date,
-            ]);
-        }
 
         return redirect()->route('user.bookings.index')
             ->with('success', 'Booking updated successfully.');
@@ -102,15 +94,7 @@ class UserBookingController extends Controller
 
     public function destroy($id)
     {
-        $booking = UserBooking::findOrFail($id);
-
-        // حذف نسخة الأدمن
-        Booking::where('user_id', Auth::id())
-            ->where('car_id', $booking->car_id)
-            ->where('pickup_date', $booking->pickup_date)
-            ->delete();
-
-        // حذف نسخة المستخدم
+        $booking = Booking::where('user_id', Auth::id())->findOrFail($id);
         $booking->delete();
 
         return redirect()->route('user.bookings.index')
