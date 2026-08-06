@@ -2,16 +2,13 @@
 
 <section class="container py-5 min-vh-100" id="about">
     <div class="row align-items-center">
-
-        <div class="col-lg-6">
-            
+        <div class="col-lg-6"> 
             <img src="{{ asset('images/Audi 1.png') }}" class="img-fluid mx-lg-0" alt="Car">
         </div>
         <div class="col-lg-6">
             <span class="badge text-primary mb-3 fs-5">
                 WHY CHOOSE US
             </span>
-
             <h2 class="fw-bold mb-4">
                 We offer the best experience with our rental deals
             </h2>
@@ -29,7 +26,6 @@
                     <p>Don't have driver? Don't worry, we have many experienced drivers for you.</p>
                 </div>
             </div>
-
             <div class="d-flex mb-4">
                 <i class="bi bi-truck text-primary fs-3 me-3"></i>
                 <div>
@@ -37,7 +33,6 @@
                     <p>Book your car anytime and we will deliver it directly to you.</p>
                 </div>
             </div>
-
             <div class="d-flex">
                 <i class="bi bi-headset text-primary fs-3 me-3"></i>
                 <div>
@@ -45,8 +40,6 @@
                     <p>Have a question? Contact us anytime.</p>
                 </div>
             </div>
-
         </div>
-
     </div>
 </section>

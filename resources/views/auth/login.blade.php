@@ -1,6 +1,5 @@
-<link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
-<link rel="stylesheet" href="{{ asset('css/auth.css') }}">
 
+<link rel="stylesheet" href="{{ asset('css/auth.css') }}">
 
 <section class="logg">
     <div class="overlay"></div>
@@ -15,25 +14,57 @@
                 <h2>Welcome Back!</h2>
                 <p>Log in to your account</p>
             </div>
-            <form action="{{ route('login') }}" method="post">
+            @if ($errors->any())
+                <div class="alert alert-danger py-2 small">
+                    <ul class="mb-0 ps-3">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
+            <form action="{{ route('login') }}" method="POST">
                 @csrf
+
                 <div class="mb-3">
-                    <label>Email</label>
-                    <input type="email" name="email" class="form-control" placeholder="Email Address" required>
+                    <label class="form-label">Email</label>
+                    <input 
+                        type="email" 
+                        name="email" 
+                        value="{{ old('email') }}" 
+                        class="form-control @error('email') is-invalid @enderror" 
+                        placeholder="Email Address" 
+                        required 
+                        autofocus>
                 </div>
+
                 <div class="mb-3">
-                    <label>Password</label>
-                    <input type="password" name="password" class="form-control" placeholder="Password" required>
+                    <label class="form-label">Password</label>
+                    <input 
+                        type="password" 
+                        name="password" 
+                        class="form-control @error('password') is-invalid @enderror" 
+                        placeholder="Password" 
+                        required>
                 </div>
-                <br>
-                <button type="submit" class="btn btn-login">Log In</button>
+
+                {{-- خيار تذكرني --}}
+                <div class="mb-3 form-check">
+                    <input type="checkbox" name="remember" class="form-check-input" id="remember">
+                    <label class="form-check-label text-white small" for="remember">Remember me</label>
+                </div>
+
+                <button type="submit" class="btn btn-login w-100">Log In</button>
             </form>
 
             <div class="text-center mt-3 text-white">
-                <a href="{{ route('password.request') }}" >Forgot Password?</a>
+                @if (Route::has('password.request'))
+                    <a href="{{ route('password.request') }}">Forgot Password?</a>
+                @endif
                 <br><br>
                 <span>Don't have an account?</span>
-                <a href="{{ route('register') }}" >Sign Up</a>
+                <a href="{{ route('register') }}">Sign Up</a>
             </div>
         </div>
     </div>

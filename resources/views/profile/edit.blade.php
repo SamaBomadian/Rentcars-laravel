@@ -1,31 +1,35 @@
 @extends('layouts.app')
-     
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Profile') }}
-        </h2>
-     
+
 @section('content')
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
-            <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-                <div class="max-w-xl">
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 space-y-4">
+
+            {{-- Title --}}
+            <h2 class="fw-bold text-dark mb-4">Account Settings</h2>
+
+            {{-- Update Profile Form --}}
+            <div class="card border-0 shadow-sm rounded-4 p-4 mb-4">
+                <div class="card-body">
                     @include('profile.partials.update-profile-information-form')
                 </div>
             </div>
 
-            <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-                <div class="max-w-xl">
+            {{-- Update Password Form --}}
+            <div class="card border-0 shadow-sm rounded-4 p-4 mb-4">
+                <div class="card-body">
                     @include('profile.partials.update-password-form')
                 </div>
             </div>
 
-            <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-                <div class="max-w-xl">
+            {{-- Delete Account Form --}}
+            <div class="card border-0 shadow-sm rounded-4 p-4 border-danger">
+                <div class="card-body">
                     @include('profile.partials.delete-user-form')
                 </div>
             </div>
+
         </div>
     </div>
-
-    @endsection
-
+</div>
+@endsection
