@@ -2,47 +2,153 @@
 
 @section('content')
 
-<div class="container">
-    <h2>Add New Car</h2>
+<div class="container mt-5">
 
-    <form action="{{ route('cars.store') }}" method="POST" enctype="multipart/form-data">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <h2>Create Booking</h2>
+
+        <a href="{{ route('bookings.my') }}" class="btn btn-secondary">
+            Back
+        </a>
+
+    </div>
+
+
+    @if ($errors->any())
+
+        <div class="alert alert-danger">
+
+            <ul class="mb-0">
+
+                @foreach ($errors->all() as $error)
+
+                    <li>{{ $error }}</li>
+
+                @endforeach
+
+            </ul>
+
+        </div>
+
+    @endif
+
+
+
+    <form action="{{ route('bookings.store') }}" method="POST">
+
         @csrf
 
-        <div class="mb-3">
-            <label>Car Name</label>
-            <input type="text" name="name" class="form-control">
+
+        <div class="row">
+
+
+            {{-- Select Car --}}
+
+            <div class="col-md-12 mb-3">
+
+                <label class="form-label">
+                    Select Car
+                </label>
+
+
+                <select name="car_id" class="form-control" required>
+
+                    <option value="">
+                        -- Choose Car --
+                    </option>
+
+
+                    @forelse($cars as $car)
+
+                        <option value="{{ $car->id }}">
+
+                            {{ $car->brand }}
+                            {{ $car->model }}
+                            -
+                            ${{ $car->price_per_day }}/Day
+
+                        </option>
+
+
+                    @empty
+
+                        <option disabled>
+                            No Cars Available
+                        </option>
+
+
+                    @endforelse
+
+
+                </select>
+
+
+            </div>
+
+
+
+
+
+            {{-- Date --}}
+
+            <div class="col-md-6 mb-3">
+
+                <label class="form-label">
+                    Booking Date
+                </label>
+
+
+                <input 
+                    type="date"
+                    name="date"
+                    class="form-control"
+                    required
+                >
+
+
+            </div>
+
+
+
+
+
+            {{-- Time --}}
+
+            <div class="col-md-6 mb-3">
+
+                <label class="form-label">
+                    Booking Time
+                </label>
+
+
+                <input 
+                    type="time"
+                    name="time"
+                    class="form-control"
+                    required
+                >
+
+
+            </div>
+
+
+
         </div>
 
-        <div class="mb-3">
-            <label>Brand</label>
-            <input type="text" name="brand" class="form-control">
-        </div>
 
-        <div class="mb-3">
-            <label>Model</label>
-            <input type="text" name="model" class="form-control">
-        </div>
-
-        <div class="mb-3">
-            <label>Year</label>
-            <input type="number" name="year" class="form-control">
-        </div>
-
-        <div class="mb-3">
-            <label>Price</label>
-            <input type="number" name="price" class="form-control">
-        </div>
-
-        <div class="mb-3">
-            <label>Image</label>
-            <input type="file" name="image" class="form-control">
-        </div>
 
         <button type="submit" class="btn btn-primary">
-            Save
+
+            Create Booking
+
         </button>
+
+
     </form>
 
+
 </div>
+
 
 @endsection

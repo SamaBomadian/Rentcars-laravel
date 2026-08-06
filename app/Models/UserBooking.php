@@ -4,18 +4,15 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Booking extends Model
+class UserBooking extends Model
 {
-    protected $table = 'bookings';
+    protected $table = 'user_bookings';
 
     protected $fillable = [
         'user_id',
         'car_id',
         'pickup_date',
-        'return_date',
-        'total_price',
-        'payment_method',
-        'payment_status',
+        'pickup_time',
         'status',
     ];
 
