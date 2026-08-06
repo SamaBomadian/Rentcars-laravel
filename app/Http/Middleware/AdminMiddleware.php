@@ -14,7 +14,6 @@ class AdminMiddleware
             return $next($request);
         }
 
-        // إذا لم يكن أدمن يتم توجيهه للصفحة الرئيسية أو إرجاع خطأ
         return redirect('/')->with('error', 'You do not have admin access.');
     }
 }

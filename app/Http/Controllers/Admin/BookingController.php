@@ -38,7 +38,6 @@ class BookingController extends Controller
 
     public function approve(Booking $booking)
     {
-        // 1. فحص ما إذا كان هناك حجز آخر مؤكد نفس الفترة لهذه السيارة قبل القبول
         $hasOverlap = Booking::where('car_id', $booking->car_id)
             ->where('id', '!=', $booking->id)
             ->whereIn('status', ['Approved', 'approved'])

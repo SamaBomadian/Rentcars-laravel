@@ -54,7 +54,6 @@ public function store(Request $request)
 
     public function update(Request $request, Car $car)
 {
-    // 1. التحقق من البيانات وإسنادها للمتغير $data أولاً
     $data = $request->validate([
         'brand'            => 'required|string|max:255',
         'model'            => 'required|string|max:255',
@@ -67,14 +66,11 @@ public function store(Request $request)
         'image'            => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
     ]);
 
-    // 2. معالجة الصورة في حال تم رفع صورة جديدة
     if ($request->hasFile('image')) {
-        // حذف الصورة القديمة إن وجدت
         if ($car->image && Storage::disk('public')->exists($car->image)) {
             Storage::disk('public')->delete($car->image);
         }
 
-        // حفظ الصورة الجديدة
          $data['image']  = $request->file('image')->store('cars', 'public');
     }
     $car->update($data);

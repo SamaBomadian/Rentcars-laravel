@@ -57,14 +57,12 @@
                         </li>
 
                         @auth
-                            {{-- رابط حجزاتي للمستخدم العادي فقط --}}
                             @if(Auth::user()->role !== 'admin')
                                 <li class="nav-item">
                                     <a class="nav-link text-primary" href="{{ route('user.bookings.index') }}">My Bookings</a>
                                 </li>
                             @endif
 
-                            {{-- قائمة Dashboard للأدمن --}}
                             @if(Auth::user()->role == 'admin')
                                 <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle text-primary fw-bold"

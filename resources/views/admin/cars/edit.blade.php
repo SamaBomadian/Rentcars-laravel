@@ -11,7 +11,6 @@
                 
                 <div class="card-body p-4">
 
-                    {{-- عرض الأخطاء إن وجدت --}}
                     @if ($errors->any())
                         <div class="alert alert-danger rounded-3">
                             <ul class="mb-0">

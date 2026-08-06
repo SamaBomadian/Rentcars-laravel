@@ -10,7 +10,6 @@
     <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
         <div class="row g-0">
             
-            {{-- صورة السيارة --}}
             <div class="col-lg-6 bg-light d-flex align-items-center justify-content-center p-4">
                 @if($car->image)
                     <img src="{{ asset('storage/' . $car->image) }}" 
@@ -22,7 +21,6 @@
                 @endif
             </div>
 
-            {{-- تفاصيل السيارة وفورم الحجز --}}
             <div class="col-lg-6 p-4 p-md-5 d-flex flex-column justify-content-between">
                 <div>
                     <div class="d-flex justify-content-between align-items-center mb-2">
@@ -40,7 +38,6 @@
 
                     <hr class="my-4">
 
-                    {{-- مميزات السيارة --}}
                     <h5 class="fw-bold mb-3">Car Features:</h5>
                     <div class="row g-3 mb-4 text-secondary fs-6">
                         <div class="col-6">
@@ -63,7 +60,6 @@
                 </div>
 
                 <div>
-                    {{-- عرض الأخطاء --}}
                     @if ($errors->any())
                         <div class="alert alert-danger rounded-3 mb-3">
                             <ul class="mb-0 ps-3">
@@ -112,7 +108,6 @@
     </div>
 </div>
 
-{{-- سكريبت ضبط وحماية التواريخ --}}
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const pickupInput = document.getElementById('pickup_date');

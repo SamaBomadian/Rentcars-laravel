@@ -105,7 +105,6 @@
                             </a>
                         </td>
                         <td>
-                            {{-- نموذج الحذف لحماية POST/DELETE مع CSRF --}}
                             <form action="{{ route('admin.cars.destroy', $car->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this car?');">
                                 @csrf
                                 @method('DELETE')

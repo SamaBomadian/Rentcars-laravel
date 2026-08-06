@@ -25,7 +25,6 @@
                     <form action="{{ route('user.bookings.store') }}" method="POST">
                         @csrf
 
-                        {{-- اختيار السيارة --}}
                         <div class="mb-4">
                             <label for="car_id" class="form-label fw-bold text-secondary">Select Car:</label>
                             <select name="car_id" id="car_id" class="form-select rounded-3 py-2" required>
@@ -38,7 +37,6 @@
                             </select>
                         </div>
 
-                        {{-- اختيار التواريخ --}}
                         <div class="row g-3 mb-4">
                             <div class="col-md-6">
                                 <label for="pickup_date" class="form-label fw-bold text-secondary">Pick-up Date:</label>
@@ -63,7 +61,6 @@
                             </div>
                         </div>
 
-                        {{-- الأزرار --}}
                         <div class="d-flex justify-content-between align-items-center mt-4">
                             <a href="{{ route('user.bookings.index') }}" class="btn btn-outline-secondary rounded-pill px-4">
                                 Cancel
@@ -80,7 +77,6 @@
     </div>
 </div>
 
-{{-- سكريبت ضبط التواريخ تلقائياً --}}
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const pickupInput = document.getElementById('pickup_date');
@@ -89,10 +85,8 @@
         pickupInput.addEventListener('change', function () {
             const selectedPickupDate = this.value;
 
-            // تحديث الحد الأدنى لتاريخ العودة ليكون تاريخ الاستلام نفسه أو بعده
             returnInput.min = selectedPickupDate;
 
-            // إذا كان تاريخ العودة المختار أصغر من تاريخ الاستلام، اضبطه فوراً
             if (returnInput.value && returnInput.value < selectedPickupDate) {
                 returnInput.value = selectedPickupDate;
             }

@@ -37,7 +37,6 @@
                             </select>
                         </div>
 
-                        {{-- التواريخ --}}
                         <div class="row g-3 mb-4">
                             <div class="col-md-6">
                                 <label for="pickup_date" class="form-label fw-bold text-secondary">Pick-up Date:</label>
