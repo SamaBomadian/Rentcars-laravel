@@ -134,7 +134,7 @@
 
                     <td>{{ $booking->return_date }}</td>
 
-                    <td>${{ number_format($booking->total_price,2) }}</td>
+                    <td>{{ number_format($booking->total_price,2) }} EGP</td>
 
                     <td>
 

@@ -9,7 +9,8 @@ use App\Http\Controllers\UserBookingController;
 
 use App\Http\Controllers\Admin\AdminCarController;
 use App\Http\Controllers\Admin\UserController;
-use App\Http\Controllers\Admin\BookingController as AdminBookingController ;
+use App\Http\Controllers\Admin\BookingController as AdminBookingController;
+use App\Http\Controllers\ContactController;
 
 // 1. Public Routes (للكل)
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -17,6 +18,9 @@ Route::get('/home', [HomeController::class, 'index'])->name('home.dashboard');
 
 Route::get('/cars', [CarController::class, 'index'])->name('cars.index');
 Route::get('/cars/{id}', [CarController::class, 'show'])->name('cars.show');
+
+// إضافة مسار إرسال التواصل هنا
+Route::post('/contact-submit', [ContactController::class, 'submit'])->name('contact.submit');
 
 
 // 2. User Routes (للمستخدم المسجل)
@@ -52,7 +56,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     // Manage Bookings
     Route::get('/bookings', [AdminBookingController::class, 'index'])->name('bookings.index');
     Route::get('/bookings/{booking}', [AdminBookingController::class, 'show'])->name('bookings.show');
-    Route::put('/bookings/{booking}', [AdminBookingController ::class, 'update'])->name('bookings.update');
+    Route::put('/bookings/{booking}', [AdminBookingController::class, 'update'])->name('bookings.update');
     Route::delete('/bookings/{booking}', [AdminBookingController::class, 'destroy'])->name('bookings.destroy');
     Route::post('/bookings/{booking}/approve', [AdminBookingController::class, 'approve'])->name('bookings.approve');
     Route::post('/bookings/{booking}/reject', [AdminBookingController::class, 'reject'])->name('bookings.reject');

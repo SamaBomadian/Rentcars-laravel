@@ -13,7 +13,7 @@
                 </div>
                 <div>
                     <h6 class="fw-bold mb-1">Address</h6>
-                    <p class="text-muted mb-0">10th of Ramadan City, Egypt</p>
+                    <p class="text-muted mb-0">Cairo, Egypt</p>
                 </div>
             </div>
 
@@ -59,7 +59,15 @@
 
         <div class="col-lg-7 ps-lg-4 border-start-lg">
             <h4 class="fw-bold mb-4" style="color:#1572D3;">Send Us a Message</h4>
-            <form action="" method="POST">
+
+            @if(session('success'))
+                <div class="alert alert-success alert-dismissible fade show rounded-3 mb-4" role="alert">
+                    {{ session('success') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
+
+            <form action="{{ route('contact.submit') }}" method="POST">
                 @csrf
                 <div class="row g-3">
                     <div class="col-md-6">
@@ -72,7 +80,7 @@
                     </div>
                     <div class="col-12">
                         <label class="form-label fw-medium">Subject</label>
-                        <input type="text" name="subject" class="form-control" placeholder="Inquiry about renting a car">
+                        <input type="text" name="subject" class="form-control" placeholder="Inquiry about renting a car" required>
                     </div>
                     <div class="col-12">
                         <label class="form-label fw-medium">Message</label>

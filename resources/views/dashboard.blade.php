@@ -15,15 +15,10 @@
                     <div class="card bg-primary text-white shadow">
 
                         <div class="card-body d-flex justify-content-between align-items-center">
-
                             <div>
-
                                 <h5>Total Users</h5>
-
                                 <h2>{{ $users }}</h2>
-
                             </div>
-
                             <i class="fas fa-users fa-3x"></i>
 
                         </div>
